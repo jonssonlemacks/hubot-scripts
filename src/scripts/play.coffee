@@ -166,6 +166,12 @@ module.exports = (robot) ->
 
       message.send("Queued up #{str}")
 
+  robot.response /fetch (.*)/i, (message) ->
+    params = {url: message.match[1]}
+    authedRequest message, '/fetch', 'post', params, (err, res, body) ->
+      message.send("Tried downloading and adding your song")
+      message.send("Server response: #{body}")
+
   robot.respond /clear play/i, (message) ->
     authedRequest message, '/queue/all', 'delete', {}, (err, res, body) ->
       message.send(":fire: :bomb:")
