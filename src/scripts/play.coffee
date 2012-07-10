@@ -111,7 +111,6 @@ module.exports = (robot) ->
   robot.respond /stop play/i, (message) ->
     message.finish()
     authedRequest message, '/pause', 'put', {}, (err, res, body) ->
-      json = JSON.parse(body)
       message.send("Okay. :(")
 
 
@@ -182,3 +181,14 @@ module.exports = (robot) ->
   robot.respond /stop (spinning|dj)/i, (message) ->
     authedRequest message, '/dj', 'delete', {note: "github-dj-#{message.message.user.githubLogin}"}, (err, res, body) ->
       message.send("Nice work. You really did a great job. Your session has been saved and added to Play as: #{body}")
+  
+  #
+  # Jónsson & Le'macks
+  # 
+  
+  robot.respond /pump up the jam(\!)?/i, (message) ->
+    authedRequest message, '/system-volume', 'get', {}, (err, res, body) ->
+      newVolume = Math.min(100, parseInt(body) + 30)
+      params = {volume: newVolume}
+      authedRequest message, '/system-volume', 'put', params, (err, res, body) ->
+        message.send("You crazy #{message.message.user.name} - volume brought to #{body}")
