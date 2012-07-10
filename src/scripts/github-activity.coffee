@@ -1,12 +1,19 @@
-# It was based on github-issues.coffee script
+# Description:
+#   None
 #
-# hubot repo show <repo> - shows activity of repository
-
-# Add "date-utils":">=1.2.5" in your hubot-scripts.json file
-# Add "githubot":"0.2.0" in your hubot-scripts.json file
+# Dependencies:
+#   "date-utils": ">=1.2.5"
+#   "githubot": "0.2.0"
+# 
+# Configuration:
+#   HUBOT_GITHUB_TOKEN
+#   HUBOT_GITHUB_USER
 #
-# You need to set the following variables:
-#   HUBOT_GITHUB_TOKEN ="<oauth token>"
+# Commands:
+#   hubot repo show <repo> - shows activity of repository
+#
+# Author:
+#   vquaiato
 
 require('date-utils')
 
@@ -14,7 +21,6 @@ module.exports = (robot) ->
   github = require("githubot")(robot)
   robot.respond /repo show (.*)$/i, (msg) ->
     repo = github.qualified_repo msg.match[1]
-    oauth_token = process.env.HUBOT_GITHUB_TOKEN
     url = "https://api.github.com/repos/#{repo}/commits"
 
     github.get url, (commits) ->
